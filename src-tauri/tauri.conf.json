@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "identifier": "com.admin.capi",
   "build": {
-    "beforeDevCommand": "dotnet watch run --project src/Capi.csproj",
+    "beforeDevCommand": "dotnet watch run --project Capi.Blazor/Capi.Blazor.csproj",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "dotnet publish -c release src/Capi.csproj -o dist",
+    "beforeBuildCommand": "dotnet publish -c release Capi.Blazor/Capi.Blazor.csproj -o dist",
     "frontendDist": "../dist/wwwroot"
   },
   "app": {
