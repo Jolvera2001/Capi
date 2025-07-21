@@ -1,12 +1,35 @@
 ﻿@page "/"
+@using System.ComponentModel
+@using Capi.Blazor.Models
+@inject HomeViewModel ViewModel
 
 <main>
     <div>
-        
+        <select @bind="ViewModel.Method">
+            @foreach (var method in Enum.GetValues<MethodEnums>())
+            {
+                <option value="@method">@method.ToString()</option>
+            }
+        </select>
+        <input/>
+        <button>Send</button>
     </div>
 </main>
 
 @code
 {
+    protected override void OnInitialized()
+    {
+        ViewModel.PropertyChanged += OnViewModelStateChange;
+    }
 
+    public void Dispose()
+    {
+        ViewModel.PropertyChanged -= OnViewModelStateChange;
+    }
+
+    private void OnViewModelStateChange(object? sender, PropertyChangedEventArgs e)
+    {
+        InvokeAsync(StateHasChanged);
+    }
 }

@@ -17,7 +17,7 @@ public partial class HomeViewModel(ClientService client) : ObservableObject
     [ObservableProperty] private MethodEnums _method =  MethodEnums.Get;
     [ObservableProperty] private HttpStatusCode _status;
 
-    [ObservableProperty] private HttpResponseMessage _response;
+    [ObservableProperty] private HttpResponseMessage? _response;
 
     [RelayCommand]
     private async Task SendAsync()
