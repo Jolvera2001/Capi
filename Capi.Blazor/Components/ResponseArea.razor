@@ -1,0 +1,17 @@
+﻿<div>
+    @if (Response is null)
+    {
+        <h2>No response</h2>
+    }
+    else
+    {
+        <div>
+            @Response.Content
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] 
+    public HttpResponseMessage? Response { get; set; }
+}

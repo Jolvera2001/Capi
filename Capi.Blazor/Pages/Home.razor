@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using System.ComponentModel
 @using Capi.Blazor.Models
+@implements IDisposable
 @inject HomeViewModel ViewModel
 
 <main>
@@ -11,9 +12,16 @@
                 <option value="@method">@method.ToString()</option>
             }
         </select>
-        <input/>
-        <button>Send</button>
+        <input @bind="ViewModel.Path"/>
+        <button @onclick="ViewModel.SendCommand.ExecuteAsync"
+                disabled="@(!ViewModel.SendCommand.CanExecute(null))">
+            Send
+        </button>
     </div>
+    <div>
+        Hello
+    </div>
+    <ResponseArea Response="@ViewModel.Response"/>
 </main>
 
 @code
@@ -21,6 +29,7 @@
     protected override void OnInitialized()
     {
         ViewModel.PropertyChanged += OnViewModelStateChange;
+        Console.WriteLine($"Viewmodel is null: {ViewModel == null}");
     }
 
     public void Dispose()
