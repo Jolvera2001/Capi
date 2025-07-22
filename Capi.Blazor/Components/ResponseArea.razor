@@ -6,12 +6,12 @@
     else
     {
         <div>
-            @Response.Content
+            @Response
         </div>
     }
 </div>
 
 @code {
     [Parameter] 
-    public HttpResponseMessage? Response { get; set; }
+    public string? Response { get; set; }
 }

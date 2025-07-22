@@ -16,31 +16,38 @@ public partial class HomeViewModel(ClientService client) : ObservableObject
     [ObservableProperty] private string? _path;
     [ObservableProperty] private MethodEnums _method =  MethodEnums.Get;
     [ObservableProperty] private HttpStatusCode _status;
-
-    [ObservableProperty] private HttpResponseMessage? _response;
+    [ObservableProperty] private HttpContent? _content;
+    [ObservableProperty] private string? _response;
 
     [RelayCommand]
     private async Task SendAsync()
     {
         if (string.IsNullOrEmpty(Path)) throw new ArgumentNullException(nameof(Path));
-        await BuildUriAsync();
-        switch (Method) 
+        try
         {
-            case MethodEnums.Get:
-                Response = await _client.GetAsync(Path);
-                Status = Response.StatusCode;
-                break;
-            case MethodEnums.Post:
-                // Response = await _client.PostAsync(Path);
-                break;
-            case MethodEnums.Put:
-                // Response = await _client.PutAsync(Path);
-                break;
-            case MethodEnums.Delete:
-                // Response = await _client.DeleteAsync(Path);
-                break;
-            default:
-                break;
+            switch (Method)
+            {
+                case MethodEnums.Get:
+                    var rawResponse = await _client.GetAsync(Path);
+                    Response = await rawResponse.Content.ReadAsStringAsync();
+                    Status = rawResponse.StatusCode;
+                    break;
+                case MethodEnums.Post:
+                    // Response = await _client.PostAsync(Path, Content);
+                    break;
+                case MethodEnums.Put:
+                    // Response = await _client.PutAsync(Path, Content);
+                    break;
+                case MethodEnums.Delete:
+                    // Response = await _client.DeleteAsync(Path);
+                    break;
+                default:
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
         }
     }
 
