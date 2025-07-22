@@ -1,5 +1,5 @@
 ﻿namespace CapiEventSystem;
 
-public class Class1
+public class EventSystem
 {
 }
