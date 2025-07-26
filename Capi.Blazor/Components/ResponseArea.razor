@@ -7,7 +7,9 @@
     else
     {
         <div>
-            @Response
+            <pre>
+                @formattedResponse
+            </pre>
         </div>
     }
 </div>
@@ -15,7 +17,18 @@
 @code {
     [Parameter] 
     public string? Response { get; set; }
+
+    private string? previousResponse = "";
     private string formattedResponse = "";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Response != previousResponse || Response != null)
+        {
+            FormatJson();
+            previousResponse = Response;
+        }
+    }
 
     private void FormatJson()
     {
@@ -24,10 +37,11 @@
             var jsonObject = JsonDocument.Parse(Response);
             var options = new JsonSerializerOptions
             {
-                WriteIndented = true
+                WriteIndented = true,
             };
 
             formattedResponse = JsonSerializer.Serialize(jsonObject, options);
+            Console.WriteLine("Format method ran!");
         }
         catch (JsonException ex)
         {
