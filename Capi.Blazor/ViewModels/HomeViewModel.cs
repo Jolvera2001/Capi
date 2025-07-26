@@ -9,8 +9,6 @@ namespace Capi.Blazor.ViewModels;
 public partial class HomeViewModel(ClientService client) : ObservableObject
 {
     private HttpClient _client = client.GetClient();
-    // Initializes a new instance of the UriBuilder class with the specified scheme,
-    // host, port number, path, and query string or fragment identifier.
     private UriBuilder _uriBuilder = new();
 
     [ObservableProperty] private string? _path;
@@ -25,21 +23,24 @@ public partial class HomeViewModel(ClientService client) : ObservableObject
         if (string.IsNullOrEmpty(Path)) throw new ArgumentNullException(nameof(Path));
         try
         {
+            HttpResponseMessage rawResponse;
             switch (Method)
             {
                 case MethodEnums.Get:
-                    var rawResponse = await _client.GetAsync(Path);
-                    Response = await rawResponse.Content.ReadAsStringAsync();
-                    Status = rawResponse.StatusCode;
+                    rawResponse = await _client.GetAsync(Path);
+                    await HandleResponse(rawResponse);
                     break;
                 case MethodEnums.Post:
-                    // Response = await _client.PostAsync(Path, Content);
+                    rawResponse = await _client.PostAsync(Path, Content);
+                    await HandleResponse(rawResponse);
                     break;
                 case MethodEnums.Put:
-                    // Response = await _client.PutAsync(Path, Content);
+                    rawResponse = await _client.PutAsync(Path, Content);
+                    await HandleResponse(rawResponse);
                     break;
                 case MethodEnums.Delete:
-                    // Response = await _client.DeleteAsync(Path);
+                    rawResponse = await _client.DeleteAsync(Path);
+                    await HandleResponse(rawResponse);
                     break;
                 default:
                     break;
@@ -54,5 +55,11 @@ public partial class HomeViewModel(ClientService client) : ObservableObject
     private async Task BuildUriAsync()
     {
         throw new NotImplementedException();
+    }
+
+    private async Task HandleResponse(HttpResponseMessage response)
+    {
+        Response = await response.Content.ReadAsStringAsync();
+        Status = response.StatusCode;
     }
 }

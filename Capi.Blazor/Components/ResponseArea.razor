@@ -1,4 +1,5 @@
-﻿<div>
+﻿@using System.Text.Json
+<div>
     @if (Response is null)
     {
         <h2>No response</h2>
@@ -14,4 +15,23 @@
 @code {
     [Parameter] 
     public string? Response { get; set; }
+    private string formattedResponse = "";
+
+    private void FormatJson()
+    {
+        try
+        {
+            var jsonObject = JsonDocument.Parse(Response);
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+
+            formattedResponse = JsonSerializer.Serialize(jsonObject, options);
+        }
+        catch (JsonException ex)
+        {
+            formattedResponse = $"Invalid JSON: {ex.Message}";
+        }
+    }
 }
