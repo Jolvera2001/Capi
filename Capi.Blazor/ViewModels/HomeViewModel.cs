@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.ObjectModel;
+using System.Net;
 using Capi.Blazor.Models;
 using Capi.Blazor.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -16,6 +17,7 @@ public partial class HomeViewModel(ClientService client) : ObservableObject
     [ObservableProperty] private HttpStatusCode _status;
     [ObservableProperty] private HttpContent? _content;
     [ObservableProperty] private string? _response;
+    private ObservableCollection<(string query, string key)> _queries = new();
 
     [RelayCommand]
     private async Task SendAsync()
