@@ -17,7 +17,9 @@ public partial class HomeViewModel(ClientService client) : ObservableObject
     [ObservableProperty] private HttpStatusCode _status;
     [ObservableProperty] private HttpContent? _content;
     [ObservableProperty] private string? _response;
-    private ObservableCollection<(string query, string key)> _queries = new();
+    
+    private readonly ObservableCollection<Param> _queries = new();
+    public IReadOnlyCollection<Param> Queries => _queries;
 
     [RelayCommand]
     private async Task SendAsync()
@@ -63,5 +65,15 @@ public partial class HomeViewModel(ClientService client) : ObservableObject
     {
         Response = await response.Content.ReadAsStringAsync();
         Status = response.StatusCode;
+    }
+
+    private async Task AddParam(Param newParam)
+    {
+        
+    }
+
+    private async Task RemoveParam(int index)
+    {
+        
     }
 }
