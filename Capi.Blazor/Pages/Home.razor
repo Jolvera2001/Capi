@@ -18,8 +18,12 @@
             Send
         </button>
     </div>
-    <TabbedBuilder />
-    <ResponseArea Response="@ViewModel.Response"/>
+    <TabbedBuilder 
+        ParamCollection="ViewModel.Queries" 
+        OnParamAdd="ViewModel.AddParam" 
+        OnParamRemove="ViewModel.RemoveParam" />
+    <ResponseArea 
+        Response="@ViewModel.Response"/>
 </main>
 
 @code

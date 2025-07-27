@@ -1,7 +1,8 @@
 ﻿namespace Capi.Blazor.Models;
 
-public class Param
+public class Param(string key, string value)
 {
-    public required string Key  { get; set; }
-    public required string Value { get; set; }
+    public Guid Id { get; init; } = Guid.NewGuid();
+    public string Key  { get; set; } = key;
+    public string Value { get; set; } = value;
 }

@@ -55,6 +55,16 @@ public partial class HomeViewModel(ClientService client) : ObservableObject
             Console.WriteLine(ex.Message);
         }
     }
+    
+    public void AddParam(Param newParam)
+    {
+        _queries.Add(newParam);
+    }
+
+    public void RemoveParam(int index)
+    {
+        _queries.RemoveAt(index);
+    }
 
     private async Task BuildUriAsync()
     {
@@ -67,13 +77,4 @@ public partial class HomeViewModel(ClientService client) : ObservableObject
         Status = response.StatusCode;
     }
 
-    private void AddParam(Param newParam)
-    {
-        _queries.Add(newParam);
-    }
-
-    private void RemoveParam(int index)
-    {
-        _queries.RemoveAt(index);
-    }
 }

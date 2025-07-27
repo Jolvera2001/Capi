@@ -1,9 +1,20 @@
-﻿<h3>TabbedBuilder</h3>
+﻿<div>
+    <input @bind="_keyInput"/>
+    <input @bind="_valueInput"/>
+    <button @onclick="AddParam">Add</button>
+    <div>
+        @foreach (var param in ParamCollection)
+        {
+            <div @key="">
+                
+            </div>
+        }
+    </div>
+</div>
 
 @code {
     [Parameter]
     public required IReadOnlyCollection<Param> ParamCollection { get; set; }
-    
     [Parameter]
     public required EventCallback<Param> OnParamAdd { get; set; }
     [Parameter]
@@ -16,11 +27,7 @@
     {
         if (!string.IsNullOrEmpty(_keyInput) || !string.IsNullOrEmpty(_valueInput))
         {
-            await OnParamAdd.InvokeAsync(new Param
-            {
-                Key = _keyInput,
-                Value = _valueInput
-            });
+            await OnParamAdd.InvokeAsync(new Param(_keyInput, _valueInput));
 
             _keyInput = string.Empty;
             _valueInput = string.Empty;
