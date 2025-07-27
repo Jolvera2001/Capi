@@ -2,5 +2,35 @@
 
 @code {
     [Parameter]
-    public string placeholder { get; set; }
+    public required IReadOnlyCollection<Param> ParamCollection { get; set; }
+    
+    [Parameter]
+    public required EventCallback<Param> OnParamAdd { get; set; }
+    [Parameter]
+    public required EventCallback<int> OnParamRemove { get; set; }
+
+    private string _keyInput = string.Empty;
+    private string _valueInput = string.Empty;
+
+    private async Task AddParam()
+    {
+        if (!string.IsNullOrEmpty(_keyInput) || !string.IsNullOrEmpty(_valueInput))
+        {
+            await OnParamAdd.InvokeAsync(new Param
+            {
+                Key = _keyInput,
+                Value = _valueInput
+            });
+
+            _keyInput = string.Empty;
+            _valueInput = string.Empty;
+        }
+    }
+
+    private async Task RemoveParam(int index)
+    {
+        if (ParamCollection.Count == 0 || index > ParamCollection.Count - 1) return;
+
+        await OnParamRemove.InvokeAsync(index);
+    }
 }
