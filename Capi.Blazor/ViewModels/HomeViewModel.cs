@@ -61,9 +61,9 @@ public partial class HomeViewModel(ClientService client) : ObservableObject
         _queries.Add(newParam);
     }
 
-    public void RemoveParam(int index)
+    public void RemoveParam(Param param)
     {
-        _queries.RemoveAt(index);
+        _queries.Remove(param);
     }
 
     private async Task BuildUriAsync()

@@ -1,12 +1,16 @@
 ﻿<div>
-    <input @bind="_keyInput"/>
-    <input @bind="_valueInput"/>
-    <button @onclick="AddParam">Add</button>
+    <div>
+        <input @bind="_keyInput"/>
+        <input @bind="_valueInput"/>
+        <button @onclick="AddParam">Add</button>
+    </div>
     <div>
         @foreach (var param in ParamCollection)
         {
-            <div @key="">
-                
+            <div @key="param.Id">
+                <p>@param.Key</p>
+                <p>@param.Value</p>
+                <button @onclick="() => RemoveParam(param))"></button>
             </div>
         }
     </div>
@@ -18,7 +22,7 @@
     [Parameter]
     public required EventCallback<Param> OnParamAdd { get; set; }
     [Parameter]
-    public required EventCallback<int> OnParamRemove { get; set; }
+    public required EventCallback<Param> OnParamRemove { get; set; }
 
     private string _keyInput = string.Empty;
     private string _valueInput = string.Empty;
@@ -34,10 +38,9 @@
         }
     }
 
-    private async Task RemoveParam(int index)
+    private async Task RemoveParam(Param param)
     {
-        if (ParamCollection.Count == 0 || index > ParamCollection.Count - 1) return;
-
-        await OnParamRemove.InvokeAsync(index);
+        if (ParamCollection.Count == 0) return;
+        await OnParamRemove.InvokeAsync(param);
     }
 }
