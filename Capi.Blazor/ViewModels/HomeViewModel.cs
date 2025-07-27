@@ -67,13 +67,13 @@ public partial class HomeViewModel(ClientService client) : ObservableObject
         Status = response.StatusCode;
     }
 
-    private async Task AddParam(Param newParam)
+    private void AddParam(Param newParam)
     {
-        
+        _queries.Add(newParam);
     }
 
-    private async Task RemoveParam(int index)
+    private void RemoveParam(int index)
     {
-        
+        _queries.RemoveAt(index);
     }
 }
